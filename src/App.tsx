@@ -8,7 +8,8 @@ import {
   CityWeather,
   WeeklyPoll,
   SocialAccount,
-  SocialPost
+  SocialPost,
+  AdminSession
 } from './types';
 import { 
   INITIAL_CONFIG, 
@@ -31,6 +32,7 @@ import { PortalFooter } from './components/common/PortalFooter';
 import { BrandManual } from './components/brand/BrandManual';
 import { SocialTemplatesStudio } from './components/social/SocialTemplatesStudio';
 import { AdminPanel } from './components/admin/AdminPanel';
+import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { CurrencyDrawerModal } from './components/finance/CurrencyDrawerModal';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { SavedArticlesDrawer } from './components/news/SavedArticlesDrawer';
@@ -140,6 +142,21 @@ export default function App() {
     }
   });
 
+  // Admin Session State
+  const [adminSession, setAdminSession] = useState<AdminSession | null>(() => {
+    try {
+      const savedLocal = localStorage.getItem('impacto_admin_session');
+      if (savedLocal) return JSON.parse(savedLocal);
+      const savedSession = sessionStorage.getItem('impacto_admin_session');
+      if (savedSession) return JSON.parse(savedSession);
+      return null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   // Save changes to localStorage
   useEffect(() => {
     localStorage.setItem('impacto_articles', JSON.stringify(articles));
@@ -225,6 +242,33 @@ export default function App() {
 
   const handleClearSaved = () => {
     setSavedArticleIds([]);
+  };
+
+  // Admin Access Handlers
+  const handleOpenAdmin = () => {
+    if (adminSession) {
+      setCurrentView('admin');
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
+
+  const handleLoginSuccess = (session: AdminSession) => {
+    setAdminSession(session);
+    if (session.rememberMe) {
+      localStorage.setItem('impacto_admin_session', JSON.stringify(session));
+    } else {
+      sessionStorage.setItem('impacto_admin_session', JSON.stringify(session));
+    }
+    setIsLoginModalOpen(false);
+    setCurrentView('admin');
+  };
+
+  const handleLogout = () => {
+    setAdminSession(null);
+    localStorage.removeItem('impacto_admin_session');
+    sessionStorage.removeItem('impacto_admin_session');
+    setCurrentView('portal');
   };
 
   // Simulated Google Analytics PageView Event
@@ -325,8 +369,21 @@ export default function App() {
     );
   }
 
-  // If user opens Admin Panel
+  // If user opens Admin Panel (Protected Route with Session Guard)
   if (currentView === 'admin') {
+    if (!adminSession) {
+      return (
+        <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4">
+          <AdminLoginModal
+            isOpen={true}
+            onClose={() => setCurrentView('portal')}
+            onLoginSuccess={handleLoginSuccess}
+            users={users}
+          />
+        </div>
+      );
+    }
+
     return (
       <AdminPanel
         articles={articles}
@@ -348,6 +405,8 @@ export default function App() {
         onUpdateSocialAccounts={setSocialAccounts}
         onUpdateSocialPosts={setSocialPosts}
         onClose={() => setCurrentView('portal')}
+        currentUser={adminSession.user}
+        onLogout={handleLogout}
       />
     );
   }
@@ -375,12 +434,14 @@ export default function App() {
         onAdClick={handleAdClick}
         onOpenBrandManual={() => setCurrentView('brand_manual')}
         onOpenSocialStudio={() => setCurrentView('social_studio')}
-        onOpenAdmin={() => setCurrentView('admin')}
+        onOpenAdmin={handleOpenAdmin}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenCurrenciesModal={() => setCurrenciesModalOpen(true)}
         onOpenSavedDrawer={() => setSavedDrawerOpen(true)}
         savedArticlesCount={savedArticleIds.length}
+        isLoggedIn={!!adminSession}
+        adminUserName={adminSession?.user.name}
       />
 
       {/* 3. Main Content Container */}
@@ -559,9 +620,10 @@ export default function App() {
         onOpenSaved={() => setSavedDrawerOpen(true)}
         onOpenPoll={scrollToPoll}
         onOpenBreaking={() => setBreakingAlertsOpen(true)}
-        onOpenAdmin={() => setCurrentView('admin')}
+        onOpenAdmin={handleOpenAdmin}
         savedCount={savedArticleIds.length}
         hasBreakingNews={!!breakingNewsArticle}
+        isLoggedIn={!!adminSession}
       />
 
       {/* 10. Institutional Footer */}
@@ -569,7 +631,15 @@ export default function App() {
         config={config}
         onSelectCategory={setActiveCategory}
         onOpenBrandManual={() => setCurrentView('brand_manual')}
-        onOpenAdmin={() => setCurrentView('admin')}
+        onOpenAdmin={handleOpenAdmin}
+      />
+
+      {/* 11. Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+        users={users}
       />
     </div>
   );

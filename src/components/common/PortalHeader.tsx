@@ -34,6 +34,8 @@ interface PortalHeaderProps {
   onOpenCurrenciesModal?: () => void;
   onOpenSavedDrawer?: () => void;
   savedArticlesCount?: number;
+  isLoggedIn?: boolean;
+  adminUserName?: string;
 }
 
 export const PortalHeader: React.FC<PortalHeaderProps> = ({
@@ -51,6 +53,8 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
   onOpenCurrenciesModal,
   onOpenSavedDrawer,
   savedArticlesCount = 0,
+  isLoggedIn = false,
+  adminUserName,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -191,11 +195,24 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
           {/* Admin panel */}
           <button
             onClick={onOpenAdmin}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase bg-[#D71920] hover:bg-red-700 text-white transition-colors shadow-xs whitespace-nowrap"
-            title="Panel de redacción y administración CMS"
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase transition-colors shadow-xs whitespace-nowrap ${
+              isLoggedIn
+                ? 'bg-neutral-900 hover:bg-black text-white border border-neutral-700'
+                : 'bg-[#D71920] hover:bg-red-700 text-white'
+            }`}
+            title={isLoggedIn ? `Sesión activa (${adminUserName || 'Administrador'}) · Clic para entrar al CMS` : 'Acceso seguro al Panel CMS de Redacción'}
           >
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span>Admin</span>
+            {isLoggedIn ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Panel CMS</span>
+              </>
+            ) : (
+              <>
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>Admin</span>
+              </>
+            )}
           </button>
 
           {/* Search trigger */}
@@ -349,10 +366,20 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
                 onOpenAdmin();
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-left p-2.5 text-xs font-bold uppercase flex items-center gap-2 bg-[#D71920] text-white"
+              className={`w-full text-left p-2.5 text-xs font-bold uppercase flex items-center justify-between text-white ${
+                isLoggedIn ? 'bg-neutral-900 border border-neutral-700' : 'bg-[#D71920]'
+              }`}
             >
-              <SlidersHorizontal className="w-4 h-4" />
-              <span>Panel CMS de Redacción</span>
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4" />
+                <span>{isLoggedIn ? 'Panel CMS de Redacción' : 'Iniciar Sesión Admin (CMS)'}</span>
+              </div>
+              {isLoggedIn && (
+                <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Activo
+                </span>
+              )}
             </button>
           </div>
         </div>

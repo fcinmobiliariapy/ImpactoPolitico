@@ -78,11 +78,19 @@ export interface AppUser {
   id: string;
   name: string;
   email: string;
+  password?: string;
   role: 'director' | 'editor' | 'periodista' | 'publicidad';
   roleTitle: string;
   avatar: string;
   active: boolean;
   lastLogin: string;
+}
+
+export interface AdminSession {
+  user: AppUser;
+  token: string;
+  loginTime: string;
+  rememberMe: boolean;
 }
 
 export interface PortalConfig {

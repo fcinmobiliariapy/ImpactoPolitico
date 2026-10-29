@@ -44,7 +44,10 @@ import {
   Link,
   CheckCircle2,
   AlertTriangle,
-  Radio
+  Radio,
+  LogOut,
+  KeyRound,
+  Shield
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -67,6 +70,8 @@ interface AdminPanelProps {
   onUpdateSocialAccounts: (accounts: SocialAccount[]) => void;
   onUpdateSocialPosts: (posts: SocialPost[]) => void;
   onClose?: () => void;
+  currentUser?: AppUser;
+  onLogout?: () => void;
 }
 
 type AdminTab = 'articles' | 'social' | 'poll' | 'ads' | 'users' | 'config' | 'ai_market';
@@ -91,6 +96,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onUpdateSocialAccounts,
   onUpdateSocialPosts,
   onClose,
+  currentUser,
+  onLogout,
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('articles');
   
@@ -344,10 +351,32 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             )}
 
-            <div className="flex items-center gap-2 text-xs text-neutral-400 bg-neutral-900 px-3 py-1.5 border border-neutral-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Rol: Director Editorial</span>
+            {/* Authenticated User Status */}
+            <div className="flex items-center gap-2.5 text-xs text-neutral-300 bg-neutral-900 px-3 py-1.5 border border-neutral-800">
+              <div className="w-6 h-6 rounded-full bg-[#D71920] text-white flex items-center justify-center font-bold text-[10px] font-mono">
+                {currentUser?.avatar || 'AD'}
+              </div>
+              <div className="leading-tight">
+                <span className="font-bold text-white block">
+                  {currentUser?.name || 'Administrador'}
+                </span>
+                <span className="text-[10px] text-neutral-400 font-mono">
+                  {currentUser?.roleTitle || 'Editor General'}
+                </span>
+              </div>
             </div>
+
+            {/* Logout button */}
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700 text-xs font-bold uppercase transition-colors flex items-center gap-1.5"
+                title="Cerrar sesión de administración"
+              >
+                <LogOut className="w-3.5 h-3.5 text-rose-400" />
+                <span className="hidden sm:inline">Cerrar Sesión</span>
+              </button>
+            )}
 
             {onClose && (
               <button
@@ -1516,6 +1545,125 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 </tbody>
               </table>
             </div>
+
+            {/* Edit User Modal */}
+            {editingUser && (
+              <div className="bg-white border-2 border-neutral-900 p-6 shadow-xl space-y-4 max-w-2xl animate-fadeIn">
+                <div className="flex justify-between items-center border-b border-neutral-200 pb-2">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-[#D71920]" />
+                    <h3 className="font-bold uppercase text-neutral-900 text-sm">
+                      {isCreatingUser ? 'Registrar Nuevo Usuario Editorial' : 'Editar Usuario & Credenciales'}
+                    </h3>
+                  </div>
+                  <button onClick={() => setEditingUser(null)} className="text-xs text-neutral-500 font-bold hover:text-black">
+                    ✕
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <label className="font-bold uppercase block mb-1">Nombre Completo</label>
+                    <input
+                      type="text"
+                      value={editingUser.name}
+                      onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-neutral-300 font-sans"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold uppercase block mb-1">Correo Institucional</label>
+                    <input
+                      type="email"
+                      value={editingUser.email}
+                      onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                      className="w-full px-3 py-2 border border-neutral-300 font-mono"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold uppercase block mb-1">Rol de Acceso CMS</label>
+                    <select
+                      value={editingUser.role}
+                      onChange={(e) => {
+                        const newRole = e.target.value as AppUser['role'];
+                        const roleTitles = {
+                          director: 'Director Editorial General',
+                          editor: 'Editor Jefe de Sección',
+                          periodista: 'Periodista de Redacción',
+                          publicidad: 'Administrador de Publicidad',
+                        };
+                        setEditingUser({ 
+                          ...editingUser, 
+                          role: newRole,
+                          roleTitle: roleTitles[newRole] || editingUser.roleTitle
+                        });
+                      }}
+                      className="w-full px-3 py-2 border border-neutral-300 bg-white"
+                    >
+                      <option value="director">Director Editorial (Acceso Total)</option>
+                      <option value="editor">Editor de Sección (Publicación & Redes)</option>
+                      <option value="periodista">Periodista / Redactor (Edición de Notas)</option>
+                      <option value="publicidad">Publicidad (Gestión de Pautas & Banners)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="font-bold uppercase block mb-1">Cargo Editorial Visible</label>
+                    <input
+                      type="text"
+                      value={editingUser.roleTitle}
+                      onChange={(e) => setEditingUser({ ...editingUser, roleTitle: e.target.value })}
+                      className="w-full px-3 py-2 border border-neutral-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold uppercase block mb-1 flex items-center justify-between">
+                      <span>Contraseña de Acceso</span>
+                      <span className="text-[10px] text-neutral-400 font-mono">Sensible</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editingUser.password || ''}
+                      placeholder="admin2026"
+                      onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
+                      className="w-full px-3 py-2 border border-neutral-300 font-mono"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-6">
+                    <label className="flex items-center gap-2 cursor-pointer font-bold uppercase text-[11px] text-neutral-800">
+                      <input
+                        type="checkbox"
+                        checked={editingUser.active}
+                        onChange={(e) => setEditingUser({ ...editingUser, active: e.target.checked })}
+                        className="rounded-xs text-[#D71920]"
+                      />
+                      <span>Cuenta Habilitada / Activa</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-3 border-t border-neutral-200">
+                  <button
+                    onClick={() => setEditingUser(null)}
+                    className="px-4 py-2 border border-neutral-300 text-xs font-bold uppercase hover:bg-neutral-100"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={() => handleSaveUser(editingUser)}
+                    className="px-5 py-2 bg-[#D71920] hover:bg-red-700 text-white text-xs font-bold uppercase shadow-sm"
+                  >
+                    Guardar Usuario
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

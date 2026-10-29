@@ -19,6 +19,7 @@ interface MobileBottomNavProps {
   onOpenAdmin: () => void;
   savedCount: number;
   hasBreakingNews?: boolean;
+  isLoggedIn?: boolean;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
@@ -31,6 +32,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   onOpenAdmin,
   savedCount,
   hasBreakingNews = false,
+  isLoggedIn = false,
 }) => {
   return (
     <nav 
@@ -107,12 +109,19 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       {/* 6. Admin Panel / CMS */}
       <button
         onClick={onOpenAdmin}
-        className={`flex flex-col items-center justify-center flex-1 py-1 px-1 transition-colors ${
+        className={`flex flex-col items-center justify-center flex-1 py-1 px-1 transition-colors relative ${
           currentView === 'admin' ? 'text-[#D71920]' : 'text-neutral-500 hover:text-black'
         }`}
       >
-        <SlidersHorizontal className="w-5 h-5" />
-        <span className="text-[10px] font-bold tracking-tight mt-0.5">Admin</span>
+        <div className="relative">
+          <SlidersHorizontal className="w-5 h-5" />
+          {isLoggedIn && (
+            <span className="w-2 h-2 rounded-full bg-emerald-500 absolute -top-0.5 -right-0.5" />
+          )}
+        </div>
+        <span className="text-[10px] font-bold tracking-tight mt-0.5">
+          {isLoggedIn ? 'CMS' : 'Admin'}
+        </span>
       </button>
     </nav>
   );
