@@ -1,0 +1,570 @@
+import { 
+  NewsArticle, 
+  CurrencyRate, 
+  CityWeather, 
+  Advertisement, 
+  AppUser, 
+  PortalConfig, 
+  WeeklyPoll, 
+  SocialAccount, 
+  SocialPost 
+} from '../types';
+
+export const INITIAL_CONFIG: PortalConfig = {
+  portalName: 'IMPACTO POLÍTICO',
+  slogan: 'La actualidad que mueve al Paraguay',
+  googleAnalyticsId: 'G-IMP84291POL',
+  analyticsActive: true,
+  contactEmail: 'redaccion@impactopolitico.com.py',
+  phone: '+595 21 445 900',
+  address: 'Calle Palma 750 c/ O\'Leary, Asunción, Paraguay',
+  socialLinks: {
+    x: 'https://x.com/impactopoliticopy',
+    facebook: 'https://facebook.com/impactopoliticopy',
+    instagram: 'https://instagram.com/impactopoliticopy',
+    youtube: 'https://youtube.com/@impactopoliticopy',
+    whatsapp: 'https://wa.me/595981000000',
+  },
+  activeLanguage: 'es',
+};
+
+export const INITIAL_CURRENCIES: CurrencyRate[] = [
+  {
+    code: 'USD',
+    name: 'Dólar Estadounidense',
+    symbol: 'US$',
+    flag: '🇺🇸',
+    buyPYG: 7910,
+    sellPYG: 7960,
+    change24h: 0.25,
+  },
+  {
+    code: 'EUR',
+    name: 'Euro',
+    symbol: '€',
+    flag: '🇪🇺',
+    buyPYG: 8480,
+    sellPYG: 8620,
+    change24h: -0.12,
+  },
+  {
+    code: 'BRL',
+    name: 'Real Brasileño',
+    symbol: 'R$',
+    flag: '🇧🇷',
+    buyPYG: 1370,
+    sellPYG: 1410,
+    change24h: 0.40,
+  },
+  {
+    code: 'ARS',
+    name: 'Peso Argentino',
+    symbol: '$',
+    flag: '🇦🇷',
+    buyPYG: 6.80,
+    sellPYG: 7.50,
+    change24h: -1.05,
+  },
+  {
+    code: 'UYU',
+    name: 'Peso Uruguayo',
+    symbol: '$U',
+    flag: '🇺🇾',
+    buyPYG: 190,
+    sellPYG: 205,
+    change24h: 0.10,
+  },
+];
+
+export const INITIAL_WEATHER: CityWeather[] = [
+  {
+    city: 'Asunción',
+    tempC: 31,
+    condition: 'Soleado con intervalos',
+    icon: 'Sun',
+    humidity: 52,
+    windKmH: 14,
+  },
+  {
+    city: 'Ciudad del Este',
+    tempC: 29,
+    condition: 'Cálido y despejado',
+    icon: 'Sun',
+    humidity: 58,
+    windKmH: 12,
+  },
+  {
+    city: 'Encarnación',
+    tempC: 28,
+    condition: 'Agradable con brisa del río',
+    icon: 'CloudSun',
+    humidity: 60,
+    windKmH: 16,
+  },
+  {
+    city: 'Mcal. Estigarribia (Chaco)',
+    tempC: 36,
+    condition: 'Caluroso y seco',
+    icon: 'Sun',
+    humidity: 34,
+    windKmH: 22,
+  },
+];
+
+export const INITIAL_ARTICLES: NewsArticle[] = [
+  {
+    id: 'art-001',
+    title: 'Congreso define en sesión maratónica el proyecto de reforma institucional y control del gasto público',
+    kicker: 'PODER LEGISLATIVO · ASUNCIÓN',
+    summary: 'La Cámara de Senadores y Diputados debate a puertas abiertas los artículos neurálgicos de la nueva ley de modernización estatal. Las bancadas buscan consensos sobre austeridad fiscal y contrataciones.',
+    content: `En una jornada de alta tensión y deliberación democrática en el Palacio Legislativo de Asunción, las distintas bancadas parlamentarias abordaron el tratamiento del proyecto de reforma del Estado y optimización del gasto presupuestario.
+
+El debate se concentró en la necesidad de blindar los recursos destinados a salud pública, educación y obras de infraestructura, mientras se implementa una revisión técnica estricta sobre cargos de confianza y licitaciones de suministros del gobierno central.
+
+"La ciudadanía paraguaya exige una señal inequívoca de transparencia y eficiencia. Cada guaraní recaudado de los contribuyentes debe redundar en beneficios tangibles para el bienestar colectivo y no en burocracias infructuosas", expresó uno de los legisladores durante la sesión matutina.
+
+Se prevé que el tratamiento en particular se extienda hasta altas horas de la noche, con la presencia de representantes gremiales, observadores de la sociedad civil y equipos económicos del Ministerio de Economía y Finanzas.`,
+    category: 'congreso',
+    categoryLabel: 'Congreso',
+    imageUrl: '/src/assets/images/paraguay_congress_session_1793294703438.jpg',
+    imageCaption: 'Debate en la sala bicameral del Congreso Nacional de Asunción sobre los alcances presupuestarios de la reforma estatal.',
+    author: {
+      name: 'Carlos Benítez Galeano',
+      role: 'Cronista Parlamentario Principal',
+    },
+    publishedAt: '2026-10-29T09:30:00Z',
+    updatedAt: '2026-10-29T10:15:00Z',
+    readingTimeMinutes: 5,
+    isLeadStory: true,
+    isBreaking: false,
+    isFeatured: true,
+    viewsCount: 14820,
+    sharesCount: 1290,
+    tags: ['Congreso', 'Presupuesto', 'Reforma Estatal', 'Asunción', 'Política'],
+    sources: 'Registro de Taquígrafos del Congreso Nacional, Informes de Comisiones Asesoras.',
+  },
+  {
+    id: 'art-002',
+    title: 'Banco Central del Paraguay mantiene tasa de política monetaria y afianza estabilidad del Guaraní',
+    kicker: 'ECONOMÍA & FINANZAS',
+    summary: 'El Comité de Política Monetaria ratificó los indicadores macroeconómicos clave para el último trimestre, destacando el control de la inflación y la resiliencia cambiaria frente a monedas regionales.',
+    content: `El Directorio del Banco Central del Paraguay (BCP) emitió su balance de política monetaria destacando la solidez de las reservas internacionales netas y la moderación del índice de precios al consumidor.
+
+Según el informe oficial presentado en la sede bancaria de Asunción, el Guaraní paraguayo se mantiene como una de las monedas más estables del Cono Sur frente a las fluctuaciones del dólar internacional y la volatilidad de los países vecinos.
+
+Los analistas financieros ponderaron positivamente las proyecciones de crecimiento del PIB, impulsadas por las exportaciones agrícolas, la generación de energía hidroeléctrica limpia y la sostenida atracción de inversiones industriales bajo régimen de maquila.`,
+    category: 'economia',
+    categoryLabel: 'Economía',
+    imageUrl: '/src/assets/images/paraguay_central_bank_1793294703247.jpg',
+    imageCaption: 'Sede del Banco Central del Paraguay en Asunción, custodio de la estabilidad macroeconómica nacional.',
+    author: {
+      name: 'Valeria Rivas Duarte',
+      role: 'Editora de Economía y Mercados',
+    },
+    publishedAt: '2026-10-29T08:15:00Z',
+    readingTimeMinutes: 4,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: true,
+    viewsCount: 9340,
+    sharesCount: 640,
+    tags: ['BCP', 'Economía', 'Guaraní', 'Inflación', 'Finanzas'],
+    sources: 'Informe CPM - Banco Central del Paraguay, Dirección de Estadísticas Económicas.',
+  },
+  {
+    id: 'art-003',
+    title: 'Investigación: Auditoría revela inconsistencias en adjudicaciones viales y licitaciones departamentales',
+    kicker: 'UNIDAD DE INVESTIGACIÓN PERIODÍSTICA',
+    summary: 'Dossier exclusivo de IMPACTO POLÍTICO tras 6 meses de análisis documental sobre contratos de obras públicas en gobernaciones y municipios del interior del país.',
+    content: `Una investigación exhaustiva llevada adelante por el equipo especial de IMPACTO POLÍTICO accedió a más de 300 legajos de licitaciones públicas emitidas a través de la Dirección Nacional de Contrataciones Públicas (DNCP).
+
+El análisis revela un patrón recurrente de concentración de adjudicaciones en consorcios con domicilio fiscal en litigio, además de certificados de obras de pavimentación que sufrieron sobrecostos de hasta un 38% respecto al pliego original.
+
+Consultadas las autoridades de las gobernaciones correspondientes, manifestaron que iniciarán sumarios administrativos independientes para deslindar responsabilidades técnicas en las supervisiones de tramos vecinales.
+
+IMPACTO POLÍTICO pone a disposición de la ciudadanía el expediente digital desclasificado en nuestro repositorio de datos abiertos para libre consulta ciudadana.`,
+    category: 'investigacion',
+    categoryLabel: 'Investigación',
+    imageUrl: '/src/assets/images/investigative_dossier_1793294703986.jpg',
+    imageCaption: 'Mesa de trabajo de la Unidad de Investigación de IMPACTO POLÍTICO durante el cotejo de pliegos y certificaciones contables.',
+    author: {
+      name: 'Martín Villalba Sosa',
+      role: 'Jefe de la Unidad de Investigación',
+    },
+    publishedAt: '2026-10-29T06:00:00Z',
+    readingTimeMinutes: 7,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: true,
+    viewsCount: 22100,
+    sharesCount: 3450,
+    tags: ['Investigación', 'Obras Públicas', 'Auditoría', 'Transparencia', 'DNCP'],
+    sources: 'DNCP, Contraloría General de la República, Expedientes de Obras Públicas 2025-2026.',
+  },
+  {
+    id: 'art-004',
+    title: 'Corredor Bioceánico: Tramo 3 registra 85% de avance y posiciona al Chaco como eje logístico sudamericano',
+    kicker: 'INFRAESTRUCTURA Y DESARROLLO',
+    summary: 'La megaobra vial y los puentes de integración internacional permitirán unir los puertos del Atlántico con los del Pacífico a través del territorio paraguayo.',
+    content: `El Ministerio de Obras Públicas y Comunicaciones confirmó que los trabajos en el Corredor Vial Bioceánico marchan a ritmo acelerado en los sectores que conectan Carmelo Peralta con Pozo Hondo.
+
+La infraestructura carretera no solo transformará la logística del comercio entre Brasil, Paraguay, Argentina y Chile, sino que ya dinamiza la economía de las comunidades chaqueñas, generando empleo formal y facilitando el transporte de la producción agroganadera.
+
+El puente internacional sobre el río Paraguay constituye el hito de ingeniería más relevante de la década en el país, consolidando a la nación guaraní como el corazón geopolítico de la integración multimodal de la región.`,
+    category: 'politica',
+    categoryLabel: 'Nacionales',
+    imageUrl: '/src/assets/images/paraguay_infrastructure_1793294704467.jpg',
+    imageCaption: 'Vista aérea de las obras del Corredor Bioceánico y los pilotes del nuevo viaducto internacional sobre el río.',
+    author: {
+      name: 'Sofía Morínigo Almada',
+      role: 'Redactora de Infraestructura y Regiones',
+    },
+    publishedAt: '2026-10-29T07:45:00Z',
+    readingTimeMinutes: 4,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: false,
+    viewsCount: 8120,
+    sharesCount: 910,
+    tags: ['Bioceánico', 'Chaco', 'MOPC', 'Infraestructura', 'Logística'],
+    sources: 'Ministerio de Obras Públicas y Comunicaciones, Informes de Fiscalización.',
+  },
+  {
+    id: 'art-005',
+    title: 'ÚLTIMO MOMENTO: Cancillería presenta reclamo formal por trabas aduaneras en la Hidrovía Paraguay-Paraná',
+    kicker: 'ALERTA DIPLOMÁTICA · RELACIONES EXTERIORES',
+    summary: 'El Ministerio de Relaciones Exteriores convocó a embajadores del Mercosur para exigir libre navegabilidad y cese de cobros unilaterales de peaje que afectan a barcazas de bandera nacional.',
+    content: `La Cancillería Nacional emitió un comunicado oficial de urgencia rechazando las nuevas retenciones operativas impuestas a embarcaciones paraguayas a lo largo del curso fluvial compartido.
+
+El canciller nacional remarcó que el Tratado de Las Leñas y los acuerdos del Mercosur consagran el principio irrenunciable de libre navegación fluvial para todos los Estados partes sin gravámenes discriminatorios.
+
+Representantes del Centro de Armadores Fluviales y Marítimos (CAFyM) celebraron la firme postura de la delegación diplomática paraguaya y solicitaron la convocatoria inmediata del Comité Intergubernamental de la Hidrovía.`,
+    category: 'ultimo-momento',
+    categoryLabel: 'Último Momento',
+    imageUrl: '/src/assets/images/paraguay_infrastructure_1793294704467.jpg',
+    imageCaption: 'Tráfico de barcazas y convoyes de exportación sobre las aguas soberanas de la Hidrovía Paraguay-Paraná.',
+    author: {
+      name: 'Carlos Benítez Galeano',
+      role: 'Cronista Parlamentario y Político',
+    },
+    publishedAt: '2026-10-29T10:10:00Z',
+    readingTimeMinutes: 3,
+    isLeadStory: false,
+    isBreaking: true,
+    isFeatured: true,
+    viewsCount: 16750,
+    sharesCount: 2890,
+    tags: ['Cancillería', 'Hidrovía', 'Mercosur', 'Comercio Exterior', 'Diplomacia'],
+    sources: 'Ministerio de Relaciones Exteriores (MRE), CAFyM.',
+  },
+  {
+    id: 'art-006',
+    title: 'Entrevista con el Contralor General: "El cruce automático de datos fiscales pondrá fin a las declaraciones juradas simuladas"',
+    kicker: 'DIÁLOGOS DE FONDO · PODER & JUSTICIA',
+    summary: 'En una conversación exclusiva con IMPACTO POLÍTICO, la máxima autoridad de control del Estado detalla los nuevos algoritmos que cruzan cuentas bancarias, inmuebles y contrataciones de funcionarios.',
+    content: `En su despacho frente a la Plaza de la Democracia, el titular del órgano superior de control de la República explicó cómo el nuevo sistema de interoperabilidad informática conecta a la SET, Registros Públicos y la Superintendencia de Bancos en tiempo real.
+
+"Durante décadas el control patrimonial dependía de carpetas físicas que prescribían en anaqueles. Hoy, si un funcionario público con sueldo de diez millones adquiere una estancia o una flota de camionetas a nombre de terceros, el sistema emite una alerta preventiva inmediata", señaló enfáticamente.
+
+La entrevista completa aborda además los desafíos del juicio político, la autonomía presupuestaria de los órganos de control y la protección efectiva a denunciantes anónimos de corrupción.`,
+    category: 'entrevistas',
+    categoryLabel: 'Entrevistas',
+    imageUrl: '/src/assets/images/investigative_dossier_1793294703986.jpg',
+    imageCaption: 'Entrevista exclusiva realizada en la sede de la Contraloría General de la República en Asunción.',
+    author: {
+      name: 'Lic. Rodrigo Fleitas Vera',
+      role: 'Director Editorial de IMPACTO POLÍTICO',
+    },
+    publishedAt: '2026-10-28T16:00:00Z',
+    readingTimeMinutes: 6,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: true,
+    viewsCount: 11980,
+    sharesCount: 1450,
+    tags: ['Contraloría', 'Transparencia', 'Justicia', 'Declaraciones Juradas'],
+    sources: 'Entrevista grabada en vivo en Asunción, archivos de control gubernamental.',
+  },
+  {
+    id: 'art-007',
+    title: 'Elecciones Municipales 2026: Justicia Electoral habilita el padrón preliminar con más de 4,8 millones de votantes',
+    kicker: 'CRONOGRAMA ELECTORAL · TSJE',
+    summary: 'El Tribunal Superior de Justicia Electoral inició el periodo de reclamos y tachas al padrón nacional. La participación de jóvenes de entre 18 y 25 años representa el 31% del caudal habilitado.',
+    content: `El cronograma para los comicios municipales de renovación de intendencias y juntas en los 263 distritos de Paraguay ingresó en su fase operativa con la publicación de los padrones provisorios en los portales digitales del TSJE.
+
+Los ministros de la máxima instancia electoral ratificaron que el sistema de votación continuará implementando el desbloqueo de listas completas a través de las máquinas electrónicas con respaldo físico en boleta impresa, garantizando auditorías públicas de software antes del día de sufragio.`,
+    category: 'elecciones',
+    categoryLabel: 'Elecciones',
+    imageUrl: '/src/assets/images/paraguay_congress_session_1793294703438.jpg',
+    imageCaption: 'Conferencia de prensa en la sede central del Tribunal Superior de Justicia Electoral.',
+    author: {
+      name: 'Sofía Morínigo Almada',
+      role: 'Redactora de Política y Procesos Electorales',
+    },
+    publishedAt: '2026-10-28T14:20:00Z',
+    readingTimeMinutes: 4,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: false,
+    viewsCount: 7450,
+    sharesCount: 420,
+    tags: ['TSJE', 'Elecciones', 'Municipales', 'Voto Joven', 'Padrón'],
+    sources: 'Tribunal Superior de Justicia Electoral (TSJE).',
+  },
+  {
+    id: 'art-008',
+    title: 'Columna de Opinión: La urgencia de un pacto educativo desprovisto de cálculos electorales',
+    kicker: 'TRIBUNA EDITORIAL · ANÁLISIS POLÍTICO',
+    summary: '¿Por qué Paraguay no puede postergar más una inyección decidida de recursos e infraestructura en la formación de sus maestros y en la conectividad escolar?',
+    content: `Los resultados de las evaluaciones internacionales de aprendizaje y los propios censos de infraestructura del MEC no admiten más dilaciones ni discursos de barricada.
+
+Un país con la mayor masa poblacional joven de Sudamérica no puede resignarse a que sus aulas carezcan de laboratorios de ciencias, bibliotecas actualizadas y docentes con salarios dignos acordes a su dedicación. El debate no debe girar en torno a colores partidarios sino a la supervivencia competitiva de la nación en la era del conocimiento digital.`,
+    category: 'opinion',
+    categoryLabel: 'Opinión',
+    imageUrl: '/src/assets/images/investigative_dossier_1793294703986.jpg',
+    imageCaption: 'Reflexión editorial semanal de la mesa directiva de IMPACTO POLÍTICO.',
+    author: {
+      name: 'Dra. Mirtha Giménez Velázquez',
+      role: 'Analista de Políticas Públicas y Educación',
+    },
+    publishedAt: '2026-10-28T11:00:00Z',
+    readingTimeMinutes: 5,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: false,
+    viewsCount: 6890,
+    sharesCount: 780,
+    tags: ['Educación', 'Opinión', 'Juventud', 'Desarrollo Nacional'],
+    sources: 'Estadísticas del MEC y Observatorio Educativo del Cono Sur.',
+  },
+  {
+    id: 'art-009',
+    title: 'Deportes: La Selección Paraguaya define la lista de convocados para las Eliminatorias Sudamericanas',
+    kicker: 'ALBIRROJA · RUMBO AL MUNDIAL',
+    summary: 'El cuerpo técnico albirrojo oficializó la nómina de futbolistas locales e internacionales para el decisivo combo de eliminatorias ante Uruguay y Brasil.',
+    content: `En el Centro de Alto Rendimiento Deportivo de Ypané se dio a conocer la lista de 27 convocados de la Albirroja. La expectativa de la afición deportiva colmó las inmediaciones del estadio Defensores del Chaco, donde las entradas para el primer partido se agotaron en menos de 48 horas.`,
+    category: 'deportes',
+    categoryLabel: 'Deportes',
+    imageUrl: '/src/assets/images/paraguay_infrastructure_1793294704467.jpg',
+    imageCaption: 'Entrenamiento en el predio de la Asociación Paraguaya de Fútbol en Ypané.',
+    author: {
+      name: 'Hugo Aranda Romero',
+      role: 'Editor de Deportes',
+    },
+    publishedAt: '2026-10-28T09:00:00Z',
+    readingTimeMinutes: 3,
+    isLeadStory: false,
+    isBreaking: false,
+    isFeatured: false,
+    viewsCount: 15300,
+    sharesCount: 2100,
+    tags: ['Albirroja', 'Fútbol', 'Eliminatorias', 'Deportes'],
+    sources: 'Asociación Paraguaya de Fútbol (APF).',
+  },
+];
+
+export const INITIAL_ADS: Advertisement[] = [
+  {
+    id: 'ad-001',
+    title: 'Itaipú Binacional: Energía Limpia para el Futuro del Paraguay',
+    advertiser: 'Itaipú Binacional',
+    location: 'header_top',
+    imageUrl: '',
+    targetUrl: 'https://www.itaipu.gov.py',
+    active: true,
+    impressions: 48920,
+    clicks: 1240,
+    startDate: '2026-10-01',
+    endDate: '2026-12-31',
+  },
+  {
+    id: 'ad-002',
+    title: 'Banco Nacional de Fomento: Créditos Productivos para el Campo',
+    advertiser: 'BNF Paraguay',
+    location: 'frontpage_middle',
+    imageUrl: '',
+    targetUrl: 'https://www.bnf.gov.py',
+    active: true,
+    impressions: 34100,
+    clicks: 890,
+    startDate: '2026-10-15',
+    endDate: '2026-11-30',
+  },
+  {
+    id: 'ad-003',
+    title: 'Expo Negocios & Maquila Paraguay 2026 - Inversión Global',
+    advertiser: 'Cámara de Empresas Maquiladoras',
+    location: 'sidebar',
+    imageUrl: '',
+    targetUrl: 'https://cemap.org.py',
+    active: true,
+    impressions: 21500,
+    clicks: 670,
+    startDate: '2026-10-10',
+    endDate: '2026-11-20',
+  },
+  {
+    id: 'ad-004',
+    title: 'Universidad Nacional de Asunción - Inscripciones Abiertas a Postgrados en Gestión Pública',
+    advertiser: 'UNA Postgrados',
+    location: 'in_article',
+    imageUrl: '',
+    targetUrl: 'https://www.una.py',
+    active: true,
+    impressions: 19800,
+    clicks: 530,
+    startDate: '2026-10-05',
+    endDate: '2026-12-15',
+  },
+];
+
+export const INITIAL_USERS: AppUser[] = [
+  {
+    id: 'usr-001',
+    name: 'Lic. Rodrigo Fleitas Vera',
+    email: 'rodrigo.fleitas@impactopolitico.com.py',
+    role: 'director',
+    roleTitle: 'Director Editorial General',
+    avatar: 'RF',
+    active: true,
+    lastLogin: 'Hoy, 08:30',
+  },
+  {
+    id: 'usr-002',
+    name: 'Carlos Benítez Galeano',
+    email: 'carlos.benitez@impactopolitico.com.py',
+    role: 'editor',
+    roleTitle: 'Editor Jefe de Política & Congreso',
+    avatar: 'CB',
+    active: true,
+    lastLogin: 'Hoy, 09:12',
+  },
+  {
+    id: 'usr-003',
+    name: 'Martín Villalba Sosa',
+    email: 'martin.villalba@impactopolitico.com.py',
+    role: 'periodista',
+    roleTitle: 'Periodista Senior de Investigación',
+    avatar: 'MV',
+    active: true,
+    lastLogin: 'Ayer, 18:40',
+  },
+  {
+    id: 'usr-004',
+    name: 'Gabriela Duarte Solís',
+    email: 'publicidad@impactopolitico.com.py',
+    role: 'publicidad',
+    roleTitle: 'Administradora de Publicidad y Pauta',
+    avatar: 'GD',
+    active: true,
+    lastLogin: 'Hoy, 10:02',
+  },
+];
+
+export const INITIAL_QUOTES = [
+  {
+    quote: 'La institucionalidad democrática no se negocia; se defiende con transparencia en cada acto de gobierno.',
+    author: 'Dra. Carmen Montiel',
+    role: 'Constitucionalista y Exmagistrada',
+    date: '29 de Octubre de 2026',
+    category: 'Frase del Día',
+  },
+  {
+    quote: 'El Chaco paraguayo ya no es el futuro lejano; con el Corredor Bioceánico es el motor presente de Sudamérica.',
+    author: 'Ing. Gustavo Acosta',
+    role: 'Coordinador de Integración Vial MOPC',
+    date: '28 de Octubre de 2026',
+    category: 'Declaración Destacada',
+  },
+];
+
+export const INITIAL_WEEKLY_POLL: WeeklyPoll = {
+  id: 'poll-sem-44',
+  question: '¿Considera que el proyecto de reforma institucional y control del gasto público debe sancionarse antes de fin de año?',
+  description: 'Debate legislativo clave en la Cámara de Senadores y Diputados de Asunción sobre presupuesto y contrataciones.',
+  category: 'PARTICIPACIÓN CIUDADANA',
+  options: [
+    { id: 'opt-1', text: 'Sí, es urgente transparentar el Estado y cortar gastos superfluos', votes: 1420 },
+    { id: 'opt-2', text: 'No, requiere mayor discusión con gremios y sociedad civil', votes: 760 },
+    { id: 'opt-3', text: 'Debe postergarse para el próximo periodo parlamentario', votes: 270 },
+  ],
+  totalVotes: 2450,
+  active: true,
+  closingDate: 'Domingo 1 de Noviembre de 2026',
+};
+
+export const INITIAL_SOCIAL_ACCOUNTS: SocialAccount[] = [
+  {
+    id: 'facebook',
+    name: 'Facebook Oficial',
+    handle: '@impactopoliticopy',
+    connected: true,
+    followers: '142.5K',
+    lastSync: 'Hace 8 min',
+    profileUrl: 'https://facebook.com/impactopoliticopy',
+  },
+  {
+    id: 'instagram',
+    name: 'Instagram Noticias',
+    handle: '@impactopoliticopy',
+    connected: true,
+    followers: '98.4K',
+    lastSync: 'Hace 4 min',
+    profileUrl: 'https://instagram.com/impactopoliticopy',
+  },
+  {
+    id: 'twitter',
+    name: 'X (Twitter) Prensa',
+    handle: '@impactopoliticopy',
+    connected: true,
+    followers: '215.9K',
+    lastSync: 'En tiempo real',
+    profileUrl: 'https://x.com/impactopoliticopy',
+  },
+];
+
+export const INITIAL_SOCIAL_POSTS: SocialPost[] = [
+  {
+    id: 'post-001',
+    articleId: 'art-001',
+    articleTitle: 'Congreso define en sesión maratónica la reforma del gasto público',
+    platforms: ['twitter', 'facebook', 'instagram'],
+    content: '🔴 #ÚLTIMOMOMENTO | La Cámara de Senadores y Diputados define a puertas abiertas los artículos neurálgicos de la nueva ley de modernización estatal y austeridad fiscal.\n\nLeé la cobertura completa en vivo:\n👉 www.impactopolitico.com.py\n\n#Paraguay #Congreso #PoliticaPY',
+    imageUrl: '/src/assets/images/paraguay_congress_session_1793294703438.jpg',
+    status: 'published',
+    publishedAt: 'Hoy, 09:45',
+    metrics: {
+      impressions: 34800,
+      likes: 1820,
+      shares: 640,
+      comments: 215,
+    },
+  },
+  {
+    id: 'post-002',
+    articleId: 'art-005',
+    articleTitle: 'Cancillería presenta reclamo formal por trabas aduaneras en la Hidrovía',
+    platforms: ['twitter', 'facebook'],
+    content: '🚨 ATENCIÓN | Cancillería Nacional convocó a embajadores del Mercosur exigiendo el cese de retenciones a convoyes fluviales de bandera paraguaya en la Hidrovía.\n\n#SoberaníaNacional #ComercioExterior #Mercosur',
+    imageUrl: '/src/assets/images/paraguay_infrastructure_1793294704467.jpg',
+    status: 'published',
+    publishedAt: 'Hoy, 10:15',
+    metrics: {
+      impressions: 48900,
+      likes: 2950,
+      shares: 1120,
+      comments: 380,
+    },
+  },
+  {
+    id: 'post-003',
+    articleId: 'art-003',
+    articleTitle: 'Investigación: Inconsistencias en licitaciones públicas de obras',
+    platforms: ['instagram', 'facebook'],
+    content: '📑 DOSSIER EXCLUSIVO | 6 meses de auditoría documental sobre 300 contratos viales en gobernaciones del interior. Accedé a los documentos desclasificados.\n\n#PeriodismoDeDatos #TransparenciaPY',
+    imageUrl: '/src/assets/images/investigative_dossier_1793294703986.jpg',
+    status: 'scheduled',
+    scheduledFor: 'Hoy, 18:00',
+  },
+];
+

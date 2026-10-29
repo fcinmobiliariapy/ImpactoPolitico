@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix IMPACTO POLÍTICO - Portal de Noticias",
+  "description": "Portal de noticias políticas, actualidad nacional, economía e investigación de Paraguay. La actualidad que mueve al Paraguay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
